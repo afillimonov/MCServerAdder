@@ -29,8 +29,19 @@ def load_servers_from_txt():
     if not os.path.exists(SERVERS_TXT):
         print(f"File '{SERVERS_TXT}' not found!")
         return []
+    
+    servers = []
     with open(SERVERS_TXT, "r", encoding="utf-8") as file:
-        return [line.strip() for line in file if line.strip()]
+        for line in file:
+            line = line.strip()
+            if not line:
+                continue
+            parts = line.split(":")
+            ip = parts[0]
+            port = parts[1] if len(parts) > 1 else "25565"
+            servers.append(f"{ip}:{port}")
+    
+    return servers
 
 
 def load_existing_servers():
@@ -51,9 +62,9 @@ def update_servers_file(new_servers):
     new_servers = list(set(new_servers))
 
     added_count = 0
-    for ip in new_servers:
-        if ip not in existing_ips:
-            server_entry = Compound({"hidden": Int(0), "ip": String(ip), "name": String(ip)})
+    for server in new_servers:
+        if server not in existing_ips:
+            server_entry = Compound({"hidden": Int(0), "ip": String(server), "name": String(server)})
             existing_servers.append(server_entry)
             added_count += 1
 
