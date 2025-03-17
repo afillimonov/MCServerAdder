@@ -77,3 +77,4 @@ if __name__ == "__main__":
     servers = load_servers_from_txt()
     if servers:
         update_servers_file(servers)
+    input("Press Enter to exit...")
